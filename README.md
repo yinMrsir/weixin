@@ -1,7 +1,7 @@
 # 基于koa2的微信公众号开发及小程序接口开发(持续更新中...)
 
 ### 关注测试号体验
-![关注测试号体验](http://wx.yinchunyu.com/images/ceshihao.jpg)
+![关注微信测试号体验](http://wx.yinchunyu.com/images/ceshihao.jpg)
 
 ### 运行项目
 ``` bash
@@ -14,7 +14,7 @@
 ##### 微信公众号
 - [√] 关注公众号获取用户信息并自动回复消息
 - [√] 根据用户发送的消息自动回复
-- [√] 接入微信JS-SDK实现分享功能(http://wx.yinchunyu.com/)
+- [√] 接入微信JS-SDK实现分享功能(请在微信中打开并关注微信测试号：http://wx.yinchunyu.com/)
 
 ##### 小程序 (使用小程序功能请先开启mongodb, 并将app.js中 db(app)打开 )
 - [√] 登录
