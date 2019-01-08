@@ -67,7 +67,7 @@ function textContent(content) {
     return 'no, no, no'
   } else if(content.indexOf('猜谜') > -1) {
     return `上边毛，下边毛，中间一粒黑葡萄，打一器官~`
-  } else if(content.indexOf('猜谜') > -1) {
+  } else if(content.indexOf('眼睛') > -1) {
     return `你真的太聪明了~`
   }else {
     return `要你说yes你不说，不和你玩了~, 回复猜谜试试！`

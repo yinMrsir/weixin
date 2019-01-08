@@ -1,6 +1,6 @@
 ## 基于koa2的微信公众号开发及小程序接口开发
 
-![关注测试号体验](<img width="150" height="150" src="https://img-blog.csdn.net/20161028230559575"/>)
+![关注测试号体验](https://wx.yinchunyu.com/images/ceshihao.jpg)
 
 ##### 当前实现的功能
 - [√] 关注公众号获取用户信息并自动回复消息、
