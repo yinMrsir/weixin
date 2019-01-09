@@ -20,8 +20,11 @@ module.exports = {
     } else if(jsonDataType === '[object String]'){
       userInfo = JSON.parse(body.jsonData).userInfo
     }
-    let result = await wxlogin(userInfo, body.code)
-    ctx.body = result
+    let Result = await wxlogin(userInfo, body.code)
+    ctx.body = {
+      code: 200,
+      Result
+    }
   },
   /**
    * 获取步数
@@ -33,8 +36,8 @@ module.exports = {
     let auth = ctx.get('Auth')
     if (!auth || toString.call(auth) !== '[object String]') {
       ctx.body = {
-        code: 401,
-        message: '用户未登录'
+        code: 551,
+        errMessage: '用户未登录'
       }
     } else {
       auth = decode(auth)
