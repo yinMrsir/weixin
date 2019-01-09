@@ -4,12 +4,14 @@ const xml2js = require('xml2js')
 module.exports = {
   msg: async (json, accessTokenData) => {
     let xml = json.xml
-    console.log(String(xml.MsgType))
     if (xml.MsgType.indexOf('event') > -1) {
       return await eventMsg(xml, accessTokenData)
     } else {
       return await replyMsg(xml)
     }
+  },
+  setMenu: async (accessTokenData, data) => {
+    await setMenu(accessTokenData, data)
   }
 }
 
@@ -83,6 +85,22 @@ function textContent(content) {
 function getUserInfo(accessToken, openid) {
   return new Promise((res, rej) => {
     request(`https://api.weixin.qq.com/cgi-bin/user/info?access_token=${accessToken}&openid=${openid}&lang=zh_CN`, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        res(JSON.parse(body))
+      } else {
+        res(false)
+      }
+    })
+  })
+}
+
+async function setMenu(accessToken, data) {
+  return new Promise((res, rej) => {
+    request({
+      url: `https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token=${accessToken}`,
+      method: "POST",
+      body: data
+    }, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         res(JSON.parse(body))
       } else {

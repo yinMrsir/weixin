@@ -45,7 +45,6 @@ module.exports = {
       let body = ctx.request.body
       let {encryptedData, iv} = body
       let userData = await getById(id)
-      console.log(Config.appid, userData)
         let pc = new WXBizDataCrypt(Config.appid, userData.session_key)
       let data = pc.decryptData(encryptedData, decodeURIComponent(iv))
       ctx.body = data
