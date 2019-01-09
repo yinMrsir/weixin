@@ -11,7 +11,7 @@ module.exports = {
     }
   },
   setMenu: async (accessTokenData, data) => {
-    await setMenu(accessTokenData, data)
+    return await setMenu(accessTokenData.access_token, data)
   }
 }
 
@@ -97,11 +97,10 @@ function getUserInfo(accessToken, openid) {
 async function setMenu(accessToken, data) {
   return new Promise((res, rej) => {
     request({
-      url: `https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token=${accessToken}`,
+      url: ` https://api.weixin.qq.com/cgi-bin/menu/create?access_token=${accessToken}`,
       method: "POST",
       body: data
     }, function (error, response, body) {
-      console.log(body)
       if (!error && response.statusCode == 200) {
         res(JSON.parse(body))
       } else {

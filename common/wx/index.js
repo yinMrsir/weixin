@@ -1,13 +1,12 @@
 const request = require('request')
-const fs = require('fs')
 const Config = require('../../config/index')
 
 /**
  * 获取access_token
  * @returns {Promise<any>}
  */
-async function getAccessToken() {
-  const data = await readFile('accesstoken')
+async function getAccessToken(ctx) {
+  const data = ctx.session.wxAccesstoken ? JSON.parse(ctx.session.wxAccesstoken) : false
   let currTime = new Date().getTime()
   if (!data || (parseInt(currTime) - parseInt(data.createTime)) >= data.expires_in) {    // 没有文件或者已过期
     return new Promise((res, rej) => {
@@ -15,7 +14,7 @@ async function getAccessToken() {
         if (!error && response.statusCode == 200) {
           let obj = {createTime: currTime}
           obj = Object.assign(obj, JSON.parse(body))
-          writeFile(JSON.stringify(obj), 'accesstoken')
+          ctx.session.wxAccesstoken = JSON.stringify(obj)
           res(obj)
         } else {
           res(false)
@@ -32,8 +31,8 @@ async function getAccessToken() {
  * @param accessToken
  * @returns {Promise<*>}
  */
-async function getTicket(accessToken) {
-  const data = await readFile('ticket')
+async function getTicket(accessToken, ctx) {
+  const data = ctx.session.ticket ? JSON.parse(ctx.session.ticket) : false
   let currTime = new Date().getTime()
   if (!data || (parseInt(currTime) - parseInt(data.createTime)) >= data.expires_in) {    // 没有文件或者已过期
     return new Promise((res, rej) => {
@@ -41,7 +40,7 @@ async function getTicket(accessToken) {
         if (!error && response.statusCode == 200) {
           let obj = {createTime: currTime}
           obj = Object.assign(obj, JSON.parse(body))
-          writeFile(JSON.stringify(obj),'ticket')
+          ctx.session.ticket = JSON.stringify(obj)
           res(body)
         } else {
           res(false)
@@ -51,41 +50,6 @@ async function getTicket(accessToken) {
   } else {
     return data
   }
-}
-
-
-
-/**
- * 写入accesstoke文件
- * @param str 写入文件的数据
- * @returns {Promise<any>}
- */
-async function writeFile(str, textName) {
-  return new Promise((res, rej) => {
-    fs.writeFile(`${process.cwd()}/tmpfile/wx/${textName}.txt`, str, err => {
-      if (!err) {
-        res(true)
-      } else {
-        res(false)
-      }
-    })
-  })
-}
-
-/**
- * 读取文件的数据
- * @returns {Promise<any>}
- */
-async function readFile(textName) {
-  return new Promise((res, rej) => {
-    fs.readFile(`${process.cwd()}/tmpfile/wx/${textName}.txt`, 'utf-8', function(err, data) {
-      if (!err) {
-        res(JSON.parse(data))
-      } else {
-        res(false)
-      }
-    })
-  })
 }
 
 module.exports = {

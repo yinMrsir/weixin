@@ -8,45 +8,6 @@ const { msg, setMenu } = require('../../service/wxService')
 
 weixin.get('/', async (ctx) => {
     let data = checkSignature(ctx)
-    if (data) {
-      let accessTokenData = await getAccessToken()
-      let obj = {
-        "button":[
-          {
-            "type":"click",
-            "name":"今日歌曲",
-            "key":"V1001_TODAY_MUSIC" },
-          {     "name":"菜单",
-            "sub_button":[
-              {
-                "type":"view",
-                "name":"搜索",
-                "url":"http://www.soso.com/"},
-              {
-                "type":"miniprogram",
-                "name":"wxa",
-                "url":"http://mp.weixin.qq.com",
-                "appid":"wx286b93c14bbf93aa",
-                "pagepath":"pages/lunar/index"
-              },
-              {
-                "type":"click",
-                "name":"赞一下我们",
-                "key":"V1001_GOOD"
-              }]
-          }],
-        "matchrule":{
-          "tag_id":"2",
-          "sex":"1",
-          "country":"中国",
-          "province":"广东",
-          "city":"广州",
-          "client_platform_type":"2",
-          "language":"zh_CN"
-        }
-      }
-      await setMenu(accessTokenData, obj)
-    }
     ctx.body = data || false
   })
   /**
@@ -55,7 +16,7 @@ weixin.get('/', async (ctx) => {
   .post('/', async (ctx) => {
     let data = checkSignature(ctx)
     if (data) {
-      let accessTokenData = await getAccessToken()
+      let accessTokenData = await getAccessToken(ctx)
       let json = ctx.request.body
       const content = await msg(json, accessTokenData)
       ctx.body = content
@@ -66,11 +27,35 @@ weixin.get('/', async (ctx) => {
    */
   .get('/config', async (ctx) => {
     const query = ctx.query
-    const accessToken = await getAccessToken()
-    const tickets = await getTicket(accessToken.access_token)
+    const accessToken = await getAccessToken(ctx)
+    const tickets = await getTicket(accessToken.access_token, ctx)
     const _tickets = JSON.parse(tickets)
     let data = sign(_tickets.ticket, query.url)
     data.appid = Config.wxAppid
+    ctx.body = data
+  })
+  .get('/setMenu', async (ctx) => {
+    let accessTokenData = await getAccessToken(ctx)
+    let obj = {
+      "button":[
+        {
+          "type":"view",
+          "name":"测试分享",
+          "url":"http://wx.yinchunyu.com"
+        },
+        {
+          "name":"菜单",
+          "sub_button":[
+            {
+              "type":"view",
+              "name":"搜索",
+              "url":"http://www.soso.com/"
+            }
+          ]
+        }
+      ]
+    }
+    let data = await setMenu(accessTokenData, JSON.stringify(obj))
     ctx.body = data
   })
 
