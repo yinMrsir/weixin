@@ -20,6 +20,7 @@ async function jscode2session(code) {
 async function wxlogin(userInfo, code) {
   const data = await jscode2session(code)  // 通过code 获取到 openid 和 session_key
   let obj = Object.assign(userInfo, data)
+  console.log(obj)
   let {session_key, nickName, openid, avatarUrl} = obj
   // 如果用户表中存在当前openid查询用户数据 并更新最后登录时间
   let user = await getByOpenId(openid)
