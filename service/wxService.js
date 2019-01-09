@@ -101,6 +101,7 @@ async function setMenu(accessToken, data) {
       method: "POST",
       body: data
     }, function (error, response, body) {
+      console.log(body)
       if (!error && response.statusCode == 200) {
         res(JSON.parse(body))
       } else {
