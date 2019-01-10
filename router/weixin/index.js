@@ -16,9 +16,9 @@ weixin.get('/', async (ctx) => {
   .post('/', async (ctx) => {
     let data = checkSignature(ctx)
     if (data) {
-      let accessTokenData = await getAccessToken(ctx)
+      let accessToken = await getAccessToken(ctx)
       let json = ctx.request.body
-      const content = await msg(json, accessTokenData)
+      const content = await msg(json, accessToken)
       ctx.body = content
     }
   })
@@ -28,14 +28,14 @@ weixin.get('/', async (ctx) => {
   .get('/config', async (ctx) => {
     const query = ctx.query
     const accessToken = await getAccessToken(ctx)
-    const tickets = await getTicket(accessToken.access_token, ctx)
+    const tickets = await getTicket(accessToken, ctx)
     const _tickets = JSON.parse(tickets)
     let data = sign(_tickets.ticket, query.url)
     data.appid = Config.wxAppid
     ctx.body = data
   })
   .get('/setMenu', async (ctx) => {
-    let accessTokenData = await getAccessToken(ctx)
+    let accessToken = await getAccessToken(ctx)
     let obj = {
       "button":[
         {
@@ -48,14 +48,14 @@ weixin.get('/', async (ctx) => {
           "sub_button":[
             {
               "type":"view",
-              "name":"搜索",
-              "url":"http://www.soso.com/"
+              "name":"旅游",
+              "url":"http://www.ctrip.com/?AllianceID=1023584&sid=1626853&ouid=&app=0101F00"
             }
           ]
         }
       ]
     }
-    let data = await setMenu(accessTokenData, JSON.stringify(obj))
+    let data = await setMenu(accessToken, JSON.stringify(obj))
     ctx.body = data
   })
 

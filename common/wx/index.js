@@ -15,7 +15,7 @@ async function getAccessToken(ctx) {
           let obj = {createTime: currTime}
           obj = Object.assign(obj, JSON.parse(body))
           ctx.session.wxAccesstoken = JSON.stringify(obj)
-          res(obj)
+          res(obj.access_token)
         } else {
           res(false)
         }

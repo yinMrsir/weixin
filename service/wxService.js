@@ -2,29 +2,29 @@ const request = require('request')
 const xml2js = require('xml2js')
 
 module.exports = {
-  msg: async (json, accessTokenData) => {
+  msg: async (json, accessToken) => {
     let xml = json.xml
     if (xml.MsgType.indexOf('event') > -1) {
-      return await eventMsg(xml, accessTokenData)
+      return await eventMsg(xml, accessToken)
     } else {
       return await replyMsg(xml)
     }
   },
-  setMenu: async (accessTokenData, data) => {
-    return await setMenu(accessTokenData.access_token, data)
+  setMenu: async (accessToken, data) => {
+    return await setMenu(accessToken, data)
   }
 }
 
 /**
  * 关注
  */
-async function eventMsg(xml, accessTokenData) {
+async function eventMsg(xml, accessToken) {
   if (xml.Event.indexOf('unsubscribe') > -1) {
     return `伤心`
   } else {
     // 去除[ ]
     let openid = (''+xml.FromUserName).replace("[ '", "").replace("' ]", '')
-    let userInfo = await getUserInfo(accessTokenData.access_token, openid)
+    let userInfo = await getUserInfo(accessToken, openid)
     
     const builder = new xml2js.Builder()
     let content = {
