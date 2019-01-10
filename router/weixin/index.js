@@ -5,6 +5,7 @@ const sign = require('../../common/wx/sign.js');
 const weixin = new Router()
 const Config = require('../../config')
 const { msg, setMenu } = require('../../service/wxService')
+const wx = require('../../controller/wx')
 
 weixin.get('/', async (ctx) => {
     let data = checkSignature(ctx)
@@ -41,7 +42,7 @@ weixin.get('/', async (ctx) => {
         {
           "type":"view",
           "name":"测试分享",
-          "url":"http://wx.yinchunyu.com"
+          "url":"http://wx.yinchunyu.com/weixin/share"
         },
         {
           "name":"菜单",
@@ -58,6 +59,7 @@ weixin.get('/', async (ctx) => {
     let data = await setMenu(accessToken, JSON.stringify(obj))
     ctx.body = data
   })
+  .get('/share', wx.share)
 
 /**
  * 检测是否为微信 发送的消息
