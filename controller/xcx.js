@@ -34,7 +34,7 @@ module.exports = {
    */
   weRunData: async (ctx, next) => {
     let auth = ctx.get('Auth')
-    if (!auth || toString.call(auth) !== '[object String]') {
+    if (!auth || auth === '[object Undefined]' || toString.call(auth) !== '[object String]') {
       ctx.body = {
         code: 551,
         errMessage: '用户未登录'
@@ -46,8 +46,11 @@ module.exports = {
       let {encryptedData, iv} = body
       let userData = await getById(id)
         let pc = new WXBizDataCrypt(Config.appid, userData.session_key)
-      let data = pc.decryptData(encryptedData, decodeURIComponent(iv))
-      ctx.body = data
+      let Result = pc.decryptData(encryptedData, decodeURIComponent(iv))
+      ctx.body = {
+        code: 200,
+        Result
+      }
     }
   }
 }
