@@ -29,19 +29,22 @@ WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
 
   } catch (err) {
     return {
-      code: 202,
-      message: '解密错误'
+      code: 201,
+      errMessage: '解密错误'
     }
   }
 
   if (decoded.watermark.appid !== this.appId) {
     return {
       code: 202,
-      message: 'appid有误'
+      errMessage: 'appid有误'
     }
   }
 
-  return decoded
+  return {
+    code: 200,
+    Result: decoded
+  }
 }
 
 module.exports = WXBizDataCrypt
