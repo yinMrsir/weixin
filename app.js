@@ -35,7 +35,7 @@ app.use(xmlParser())
 // 进行requestbody解析
 app.use(bodyParser())
 // 连接mongodb
-db(app)
+// db(app)
 // 加入路由
 app.use(router.routes(), router.allowedMethods())
 
